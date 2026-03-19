@@ -1,110 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-<meta charset="UTF-8">
+
+<title>For You ❤️</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Be My Valentine ❤️</title>
 
 <style>
+
 body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-    height:100vh;
-    overflow:hidden;
-    text-align:center;
+margin:0;
+font-family:Arial;
+text-align:center;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+overflow:hidden;
 }
 
 .container{
-    position:relative;
-    top:50%;
-    transform:translateY(-50%);
+margin-top:60px;
 }
 
 img{
-    width:220px;
-    border-radius:20px;
-}
-
-h1{
-    color:white;
-    font-size:28px;
+width:280px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
 }
 
 button{
-    font-size:18px;
-    padding:12px 24px;
-    margin:15px;
-    border:none;
-    border-radius:25px;
+font-size:18px;
+padding:12px 22px;
+margin:10px;
+border:none;
+border-radius:12px;
+cursor:pointer;
 }
 
-#yes{
-    background:#ff3366;
-    color:white;
+#yesBtn{
+background:#28a745;
+color:white;
 }
 
-#no{
-    background:white;
-    position:absolute;
+#noBtn{
+background:#ff4d4d;
+color:white;
+position:absolute;
+}
+
+#message{
+display:none;
+padding:40px;
 }
 
 .heart{
-    position:absolute;
-    animation:float 6s linear infinite;
+position:fixed;
+top:-10px;
+color:red;
+font-size:20px;
+animation:fall linear infinite;
 }
 
-@keyframes float{
-    0%{transform:translateY(100vh);opacity:0;}
-    50%{opacity:1;}
-    100%{transform:translateY(-10vh);opacity:0;}
+@keyframes fall{
+
+0%{
+transform:translateY(-10vh);
 }
+
+100%{
+transform:translateY(110vh);
+}
+
+}
+
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
-<img src="https://imgur.com/gallery/yee-ha-politics-fQGNsuY">
+<div class="container" id="main">
+
 <h1>Will you be my Valentine? ❤️</h1>
 
-<button id="yes" onclick="yesAnswer()">Yes 💖</button>
-<button id="no">No</button>
+<img src="https://imgur.com/gallery/yee-ha-politics-fQGNsuY">
+
+<br><br>
+
+<button id="yesBtn">Yes</button>
+<button id="noBtn">No</button>
+
 </div>
+
+<div id="message">
+
+<h1>အရမ်းချစ်တယ် ❤️</h1>
+
+<h2 id="date"></h2>
+
+<p id="letter" style="font-size:20px;max-width:600px;margin:auto;"></p>
+
+</div>
+
+<audio id="song" loop>
+<source src="music.mp3" type="audio/mp3">
+</audio>
 
 <script>
 
-const noButton = document.getElementById("no");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
 
-function moveButton(){
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
+let yesSize = 18;
 
-    noButton.style.left = x + "px";
-    noButton.style.top = y + "px";
+function moveNo(){
+
+yesSize += 8;
+
+yesBtn.style.fontSize = yesSize+"px";
+
+noBtn.style.left=Math.random()*window.innerWidth+"px";
+noBtn.style.top=Math.random()*window.innerHeight+"px";
+
 }
 
-noButton.addEventListener("touchstart", moveButton);
-noButton.addEventListener("mouseover", moveButton);
+noBtn.onmouseover = moveNo;
+noBtn.ontouchstart = moveNo;
 
-function yesAnswer(){
-    document.body.innerHTML =
-    "<h1 style='color:white;margin-top:40vh;'>Yay! ❤️ I love you!</h1>";
+yesBtn.onclick=function(){
+
+document.getElementById("song").play();
+
+document.getElementById("main").style.display="none";
+
+document.getElementById("message").style.display="block";
+
+document.getElementById("date").innerHTML=new Date().toDateString();
+
+typeLetter();
+
+startHearts();
+
 }
 
-function createHeart(){
-    const heart = document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="❤️";
+let text="From the moment you came into my life, everything became brighter. You are the happiness in my heart and the peace in my world.";
 
-    heart.style.left=Math.random()*100+"vw";
+let i=0;
 
-    document.body.appendChild(heart);
+function typeLetter(){
 
-    setTimeout(()=>heart.remove(),6000);
+if(i<text.length){
+
+document.getElementById("letter").innerHTML+=text.charAt(i);
+
+i++;
+
+setTimeout(typeLetter,40);
+
 }
 
-setInterval(createHeart,400);
+}
+
+function startHearts(){
+
+setInterval(function(){
+
+let heart=document.createElement("div");
+
+heart.className="heart";
+
+heart.innerHTML="❤️";
+
+heart.style.left=Math.random()*100+"vw";
+
+heart.style.fontSize=(10+Math.random()*30)+"px";
+
+heart.style.animationDuration=(3+Math.random()*5)+"s";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),8000);
+
+},300);
+
+}
 
 </script>
 
